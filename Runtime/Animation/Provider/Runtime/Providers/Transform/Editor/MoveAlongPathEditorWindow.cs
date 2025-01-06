@@ -108,9 +108,8 @@ namespace OSK
                 float handleSize = HandleUtility.GetHandleSize(path.position) * 0.2f;
                 Handles.color = Color.blue;
 
-                Vector3 newPosition = Handles.FreeMoveHandle(
+                var fmh_113_21_638718090268732488 = Quaternion.identity; Vector3 newPosition = Handles.FreeMoveHandle(
                     path.position,
-                    Quaternion.identity,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap
