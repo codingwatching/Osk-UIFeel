@@ -93,7 +93,6 @@ namespace OSK
             Repaint();
         }
 
-#if UNITY_EDITOR
         private void OnSceneGUI(SceneView sceneView)
         {
             if (moveAlongPathProvider == null || moveAlongPathProvider.paths.Count == 0)
@@ -107,18 +106,37 @@ namespace OSK
 
                 float handleSize = HandleUtility.GetHandleSize(path.position) * 0.2f;
                 Handles.color = Color.blue;
-              
+
                 if (e.type == EventType.MouseDown && e.button == 0)
                 {
                     indexPathSelect = i + 1;
                 }
 
+                /*
+                                Vector3 newPosition = Handles.FreeMoveHandle(
+                                     path.position,
+                                     handleSize,
+                                     Vector3.zero,
+                                     Handles.SphereHandleCap
+                                );*/
+
+#if UNITY_2022_1_OR_NEWER
+                var r = Quaternion.identity;
                 Vector3 newPosition = Handles.FreeMoveHandle(
                     path.position,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap
                 );
+#else
+                Vector3 newPosition = Handles.FreeMoveHandle(
+                    path.position,
+                    Quaternion.identity,
+                    handleSize,
+                    Vector3.zero,
+                    Handles.SphereHandleCap
+                );
+#endif
 
                 if (newPosition != path.position)
                 {
@@ -231,7 +249,6 @@ namespace OSK
                 return;
             SceneView.RepaintAll();
         }
-#endif
 
         private void AddPathPointAt(Vector3 position)
         {
