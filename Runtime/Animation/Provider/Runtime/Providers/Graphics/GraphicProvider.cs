@@ -31,6 +31,7 @@ namespace OSK
             tweener = blendable
                 ? graphic.DOBlendableColor(to, settings.duration)
                 : graphic.DOColor(to, settings.duration);
+            base.ProgressTween(isPlayBackwards);
         }
 
         public override void Play()
