@@ -107,19 +107,18 @@ namespace OSK
 
                 float handleSize = HandleUtility.GetHandleSize(path.position) * 0.2f;
                 Handles.color = Color.blue;
-
-                var fmh_113_21_638718090268732488 = Quaternion.identity; Vector3 newPosition = Handles.FreeMoveHandle(
-                    path.position,
-                    handleSize,
-                    Vector3.zero,
-                    Handles.SphereHandleCap
-                );
-                
+              
                 if (e.type == EventType.MouseDown && e.button == 0)
                 {
                     indexPathSelect = i + 1;
                 }
 
+                Vector3 newPosition = Handles.FreeMoveHandle(
+                    path.position,
+                    handleSize,
+                    Vector3.zero,
+                    Handles.SphereHandleCap
+                );
 
                 if (newPosition != path.position)
                 {
