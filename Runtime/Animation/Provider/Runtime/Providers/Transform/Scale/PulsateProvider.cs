@@ -12,7 +12,7 @@ namespace OSK
         private float currentDelay;
 
         public Vector3 ratio = Vector3.one;
-        private Vector3 originalScale;
+        private Vector3 initialScale;
 
         private OSK.ScaleProvider _scaleProvider;
         private ButtonEffect buttonEffect;
@@ -25,12 +25,12 @@ namespace OSK
             if (_scaleProvider != null)
             {
                 currentDelay = delay + _scaleProvider.settings.duration + _scaleProvider.settings.delay;
-                originalScale = Vector3.one;
+                initialScale = Vector3.one;
             }
             else
             {
                 currentDelay = delay;
-                originalScale = transform.localScale;
+                initialScale = transform.localScale;
             }
         }
 
@@ -49,7 +49,7 @@ namespace OSK
             {
                 float amt = Mathf.Sin(Time.time * speed);
                 amt = oneSided ? Mathf.Abs(amt) : amt;
-                transform.localScale = originalScale + ratio * (amount * amt);
+                transform.localScale = initialScale + ratio * (amount * amt);
             }
         }
     }

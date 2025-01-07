@@ -15,11 +15,14 @@ namespace OSK
         [HideInInspector]
         public Vector3 to = Vector3.zero;
         
+        private Vector3 initialRotation;
+        
         public override object GetStartValue() => from;
         public override object GetEndValue() => to;
 
         public override void ProgressTween(bool isPlayBackwards)
         { 
+            initialRotation = RootTransform.localEulerAngles;
             RootTransform.localEulerAngles = from;
             tweener = isLocal
                 ? RootTransform.DOLocalRotate(to, settings.duration, rotateMode)
@@ -37,7 +40,7 @@ namespace OSK
         public override void Stop()
         {
             base.Stop(); 
-            RootTransform.localEulerAngles = from;
+            RootTransform.localEulerAngles = initialRotation;
         }
     }
 }

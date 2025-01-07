@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
 namespace OSK
 {
@@ -76,6 +78,8 @@ namespace OSK
         public virtual void OnEnable() => Play();
         public virtual void OnDisable() => Stop();
         public virtual void OnDestroy() => Stop();
+
+        public virtual void Reset() {}
 
         public abstract object GetStartValue();
         public abstract object GetEndValue();

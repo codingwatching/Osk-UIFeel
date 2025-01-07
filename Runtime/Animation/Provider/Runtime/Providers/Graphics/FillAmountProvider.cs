@@ -11,6 +11,8 @@ namespace OSK
         [HideInInspector] public Image image;
         [HideInInspector] public float from;
         [HideInInspector] public float to;
+        
+        private float initialFillAmount;
 
         public override object GetStartValue() => from;
         public override object GetEndValue() => to;
@@ -30,6 +32,7 @@ namespace OSK
             }
 
             target = image;
+            initialFillAmount = image.fillAmount;
             image.fillAmount = from;
             tweener = DOTween.To(() => from, y => image.fillAmount = (float)y, to, settings.duration);
             base.ProgressTween(isPlayBackwards);
@@ -43,7 +46,7 @@ namespace OSK
         public override void Stop()
         {
             base.Stop();
-            image.fillAmount = from;
-        }
+            image.fillAmount = initialFillAmount;
+        } 
     }
 }
