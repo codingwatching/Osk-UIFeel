@@ -139,6 +139,18 @@ namespace OSK
             tweener.Goto(time);
         }
 
+        /// <summary>
+        /// percent in range [0-1]
+        /// </summary>
+        /// <param name="percent"></param>
+        public void PreviewPercent(float percent)
+        {
+            if (tweener == null) return;
+            percent = Mathf.Clamp01(percent);
+            float timeInSeconds = tweener.Duration() * percent;
+            tweener.Goto(timeInSeconds);
+        }
+
         [ContextMenu("PlayBackwards")]
         public void PlayBackwards()
         {
