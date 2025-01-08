@@ -35,7 +35,8 @@ namespace OSK
         public override void Stop()
         {
             base.Stop();
-            text.text = startValue.ToString();
+           if(text != null)
+               text.text = startValue.ToString();
         }
         
 #if UNITY_EDITOR
