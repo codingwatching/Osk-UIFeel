@@ -8,7 +8,7 @@ namespace OSK
         Tweener Tweener { get; }
         bool IsPlaying { get; }
         void ProgressTween(bool isPlayBackwards);
-        void Play();
+        void PlayOnEnable();
         void Rewind();
         void Stop();
         float GetDuration();

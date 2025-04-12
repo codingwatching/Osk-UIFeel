@@ -41,7 +41,7 @@ namespace OSK
         public static void StartPreview(this IDoTweenProvider provider, TweenCallback OnStart = null, TweenCallback OnUpdate = null)
         {
             if (null == provider) return;
-            provider.Play();
+            provider.PlayOnEnable();
             var tween = provider.Tweener;
             if (!tweeners.Contains(tween))
             {

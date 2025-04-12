@@ -41,7 +41,7 @@ namespace OSK
             });
         }
 
-        public void Play() => Providers.ForEach(provider => provider.Play());
+        public void Play() => Providers.ForEach(provider => provider.PlayOnEnable());
         public void Stop()=> Providers.ForEach(provider => provider.Stop());
         public void Rewind() => Providers.ForEach(provider => provider.Rewind());
         public void Preview(float time) => Providers.ForEach(provider => provider.Preview(time));

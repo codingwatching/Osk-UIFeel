@@ -38,9 +38,9 @@ namespace OSK
             base.ProgressTween(isPlayBackwards);
         }
 
-        public override void Play()
+        public override void PlayOnEnable()
         {
-            base.Play();
+            base.PlayOnEnable();
         }
 
         public override void Stop()

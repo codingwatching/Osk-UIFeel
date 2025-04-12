@@ -75,7 +75,7 @@ namespace OSK
 
         public bool IsPlaying => null != tweener && tweener.IsPlaying();
 
-        public virtual void OnEnable() => Play();
+        public virtual void OnEnable() => PlayOnEnable();
         public virtual void OnDisable() => Stop();
         public virtual void OnDestroy() => Stop();
 
@@ -114,12 +114,25 @@ namespace OSK
                 tweener.SetEase(settings.curve);
         }
 
-        [ContextMenu("Play")]
-        public virtual void Play()
+        [ContextMenu("PlayOnEnable")]
+        public virtual void PlayOnEnable()
         {
             if (!settings.playOnEnable)
                 return;
 
+            tweener?.Kill();
+            tweener = null;
+            if (!target)
+                if (tweener != null)
+                    target = (UnityEngine.Object)tweener.target;
+
+            isPlayBackwards = settings.isPlayBackwards;
+            ProgressTween(isPlayBackwards);
+        }
+        
+        [ContextMenu("Play With Code")]
+        public virtual void Play()
+        {
             tweener?.Kill();
             tweener = null;
             if (!target)
@@ -153,10 +166,7 @@ namespace OSK
 
         [ContextMenu("PlayBackwards")]
         public void PlayBackwards()
-        {
-            if (!settings.playOnEnable)
-                return;
-
+        {  
             tweener?.Kill();
             tweener = null;
             if (!target)
@@ -166,6 +176,7 @@ namespace OSK
             isPlayBackwards = true;
             ProgressTween(isPlayBackwards);
         }
+        
 
         public virtual void Rewind() => tweener?.Rewind();
 

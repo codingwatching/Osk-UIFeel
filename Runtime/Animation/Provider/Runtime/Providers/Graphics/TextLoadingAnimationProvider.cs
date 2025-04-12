@@ -48,9 +48,9 @@ namespace OSK
         }
 
 
-        public override void Play()
+        public override void PlayOnEnable()
         {
-            base.Play();
+            base.PlayOnEnable();
         }
 
 
