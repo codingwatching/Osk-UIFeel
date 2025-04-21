@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OSK
@@ -67,6 +69,16 @@ namespace OSK
         [ShowIf(nameof(playSoundOnClick))] public string soundClick = "ui_click";
 
         protected Tween mTween;
+        protected bool mIsResetDefault = true;
+
+        public bool isIgnoreTimeScale = true;
+
+
+        [Space] [Header("Events")] [SerializeField]
+        protected bool isShowEvent = false;
+
+        [ShowIf(nameof(isShowEvent))] public UnityEvent OnPointerDownEvent;
+        [ShowIf(nameof(isShowEvent))] public UnityEvent OnPointerUpEvent;
 
         protected void KillTween()
         {
@@ -77,34 +89,35 @@ namespace OSK
         public void ApplyTweenDown(TweenSetting setting)
         {
             if (setting.animationType.HasFlag(AnimationType.Scale))
-            {
-                mTween = transform.DOScale(setting.SizeTarget, setting.Duration).SetUpdate(true);
-            }
+                mTween = transform.DOScale(setting.SizeTarget, setting.Duration);
 
             if (setting.animationType.HasFlag(AnimationType.Rotator))
-            {
                 mTween = transform.DORotate(defaultRotation + setting.RotationTarget, setting.Duration);
-            }
 
             if (setting.animationType.HasFlag(AnimationType.Shaker))
-            {
-                mTween = transform.DOShakePosition(setting.Duration, setting.StrengthTarget, setting.Vibrato, 90,
-                    false);
-            }
+                mTween = transform.DOShakePosition(setting.Duration, setting.StrengthTarget, setting.Vibrato);
 
             // Apply easing
             if (setting.UseCurve)
-                mTween?.SetEase(setting.Curve); // Ensure mTween is not null
+                mTween?.SetEase(setting.Curve);
             else
                 mTween?.SetEase(setting.EaseType);
+
+            mTween?.SetUpdate(isIgnoreTimeScale);
         }
 
 
         public void ApplyTweenReset(TweenSetting setting)
         {
+            if (!mIsResetDefault)
+                return;
             defaultSize = transform.localScale;
             defaultRotation = Vector3.zero;
             defaultPosition = transform.localPosition;
+        }
+
+        protected virtual void PlaySound()
+        {
         }
     }
 }

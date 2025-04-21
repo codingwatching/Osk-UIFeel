@@ -17,12 +17,17 @@ namespace OSK
         
         private Vector3 initialRotation;
         
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            initialRotation = isLocal ? RootTransform.localEulerAngles : RootTransform.eulerAngles;
+        }
+        
         public override object GetStartValue() => from;
         public override object GetEndValue() => to;
 
         public override void ProgressTween(bool isPlayBackwards)
         { 
-            initialRotation = RootTransform.localEulerAngles;
             RootTransform.localEulerAngles = from;
             tweener = isLocal
                 ? RootTransform.DOLocalRotate(to, settings.duration, rotateMode)
@@ -40,7 +45,11 @@ namespace OSK
         public override void Stop()
         {
             base.Stop(); 
-            RootTransform.localEulerAngles = initialRotation;
+            
+            if (isLocal)
+                RootTransform.localEulerAngles = initialRotation;
+            else
+                RootTransform.eulerAngles = initialRotation;
         }
     }
 }

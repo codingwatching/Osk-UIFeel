@@ -21,27 +21,42 @@ namespace OSK
         public bool snapping = false;
         public bool fadeOut = true;
  
-        private Vector3 _originalPosition;
-        private Vector3 _originalRotation;
-        private Vector3 _originalScale;
-        
-        
+        private Vector3 originalPosition = Vector3.zero;
+        private Vector3 originalRotation = Vector3.zero;
+        private Vector3 originalScale = Vector3.one;
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            
+            originalPosition = RootTransform.localPosition;
+            originalRotation = RootTransform.localEulerAngles;
+            originalScale = RootTransform.localScale;
+        }
+
+
         public override object GetStartValue() => null;
         public override object GetEndValue() => null;
+        
+        
 
         public override void  ProgressTween(bool isPlayBackwards)
         {
-            _originalPosition = RootTransform.localPosition;
-            _originalRotation = RootTransform.localEulerAngles;
-            _originalScale = RootTransform.localScale;
+            RootTransform.localPosition = originalPosition;
+            RootTransform.localEulerAngles = originalRotation;
+            RootTransform.localScale = originalScale;
 
+            if (tweener == null)
+            {
+                originalPosition = RootTransform.localPosition;
+                originalRotation = RootTransform.localEulerAngles;
+                originalScale = RootTransform.localScale;
+            }
             
             var rs = (isRandom) ? Extension.RandomVector3(-strength, strength) : strength;
             tweener = typeShake switch
             {
-                
-                TypeShake.Position => RootTransform.DOShakePosition(settings.duration, rs, vibrato, randomness, snapping,
-                    fadeOut),
+                TypeShake.Position => RootTransform.DOShakePosition(settings.duration, rs, vibrato, randomness, snapping,  fadeOut),
                 TypeShake.Rotation => RootTransform.DOShakeRotation(settings.duration, rs, vibrato, randomness, fadeOut),
                 TypeShake.Scale => RootTransform.DOShakeScale(settings.duration, rs, vibrato, randomness, fadeOut),
                 _ => null
@@ -61,9 +76,9 @@ namespace OSK
             tweener?.Rewind();
             tweener = null;
 
-            RootTransform.localPosition = _originalPosition;
-            RootTransform.localEulerAngles = _originalRotation;
-            RootTransform.localScale = _originalScale;
+            RootTransform.localPosition = originalPosition;
+            RootTransform.localEulerAngles = originalRotation;
+            RootTransform.localScale = originalScale;
         }
     }
 }

@@ -1,15 +1,15 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using DG.Tweening;
 using UnityEngine.UI;
-using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 namespace OSK
 {
     public class ButtonEffect : BaseButton, IPointerDownHandler, IPointerUpHandler
     {
-        [Space] [Header("Settings")] public TweenSetting setting = new TweenSetting(0.1f, false,
+        [Space] 
+        [Header("Settings")] 
+        public TweenSetting setting = new TweenSetting(0.1f, false,
             AnimationCurve.Linear(0, 0, 1, 1), Ease.OutQuad,
             new Vector3(0.95f, 0.95f, 1), new Vector3(0, 0, 10), 7f, 5);
 
@@ -26,9 +26,10 @@ namespace OSK
             if (GetComponent<Button>() != null && GetComponent<Button>().interactable == false)
                 return;
 
+            OnPointerDownEvent?.Invoke();
             if (playSoundOnClick)
             {
-                //Main.Sound.Play("ui_click", false);
+                PlaySound();
             }
 
             KillTween();
@@ -41,6 +42,8 @@ namespace OSK
             transform.localScale = defaultSize;
             transform.localPosition = defaultPosition;
             transform.localEulerAngles = defaultRotation;
+            
+            OnPointerUpEvent?.Invoke();
             
             KillTween();
             ApplyTweenReset(setting);

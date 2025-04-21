@@ -15,5 +15,5 @@ namespace OSK
             this.position = position;
             this.rotation = rotation;
         }
-    }
+    } 
 }

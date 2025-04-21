@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
-using System;
 using DG.Tweening;
+using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 namespace OSK
 {
@@ -14,7 +12,8 @@ namespace OSK
         [Header("Button UI")]
         [SerializeField] private Graphic m_Image;
         [SerializeField] private Color colorShow = Color.white;
-        [SerializeField] private Color colorPress = Color.gray;
+        [SerializeField] private Color colorPress = new Color(0.83f, 0.83f, 0.83f, 1f);
+        private bool isPress;
 
 
         public TweenSetting DownSetting = new TweenSetting(0.1f, false, AnimationCurve.Linear(0, 0, 1, 1), Ease.OutQuad,
@@ -30,11 +29,6 @@ namespace OSK
         [ShowIf(nameof(NeedSecondUpSetting), true)]
         public TweenSetting SecondUpSetting = new TweenSetting(0.08f, false, AnimationCurve.Linear(0, 0, 1, 1),
             Ease.OutQuad, new Vector3(1, 1, 1), new Vector3(0,0, -5), 5 , 7);
-        private bool mIsPress;
-
-        [Space] [Header("Events")] 
-        public UnityEvent OnPointerDownEvent;
-        public UnityEvent OnPointerUpEvent;
 
 
         private void Awake()
@@ -46,7 +40,7 @@ namespace OSK
         private void OnEnable()
         {
             m_Image.color = colorShow;
-            mIsPress = false;
+            isPress = false;
             Recover();
         }
 
@@ -60,23 +54,20 @@ namespace OSK
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (mIsPress) return;
-            mIsPress = true;
+            if (isPress) return;
+            isPress = true;
             m_Image.color = colorPress;
             OnPointerDownEvent?.Invoke();
             DownAnim();
             
-            
             if (playSoundOnClick)
-            {
-                //Main.Sound.Play("ui_click", false);
-            }
+                PlaySound();
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (!mIsPress) return;
-            mIsPress = false;
+            if (!isPress) return;
+            isPress = false;
 
             m_Image.color = colorShow;
             OnPointerUpEvent?.Invoke();
