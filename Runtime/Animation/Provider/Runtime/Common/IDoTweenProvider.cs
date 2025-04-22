@@ -9,6 +9,7 @@ namespace OSK
         bool IsPlaying { get; }
         void ProgressTween(bool isPlayBackwards);
         void PlayOnEnable();
+        void Play();
         void Rewind();
         void Stop();
         float GetDuration();
