@@ -46,18 +46,18 @@ namespace OSK
 
                 for (int i = 0; i < moveAlongPathProvider.paths.Count; i++)
                 {
-                    Path path = moveAlongPathProvider.paths[i];
+                    PathProvier pathProvier = moveAlongPathProvider.paths[i];
                     EditorGUILayout.BeginHorizontal();
 
                     GUILayout.Label($"Index {i}", EditorStyles.label);
-                    path.index = i;
-                    path.position = EditorGUILayout.Vector3Field("Position", path.position);
-                    path.rotation =
-                        Quaternion.Euler(EditorGUILayout.Vector3Field("Rotation", path.rotation.eulerAngles));
+                    pathProvier.index = i;
+                    pathProvier.position = EditorGUILayout.Vector3Field("Position", pathProvier.position);
+                    pathProvier.rotation =
+                        Quaternion.Euler(EditorGUILayout.Vector3Field("Rotation", pathProvier.rotation.eulerAngles));
 
                     if (GUILayout.Button("Remove"))
                     {
-                        moveAlongPathProvider.RemovePathPoint(path);
+                        moveAlongPathProvider.RemovePathPoint(pathProvier);
                     }
 
                     EditorGUILayout.EndHorizontal();
@@ -102,9 +102,9 @@ namespace OSK
             // Existing code for path editing
             for (int i = 0; i < moveAlongPathProvider.paths.Count; i++)
             {
-                Path path = moveAlongPathProvider.paths[i];
+                PathProvier pathProvier = moveAlongPathProvider.paths[i];
 
-                float handleSize = HandleUtility.GetHandleSize(path.position) * 0.2f;
+                float handleSize = HandleUtility.GetHandleSize(pathProvier.position) * 0.2f;
                 Handles.color = Color.blue;
 
                 if (e.type == EventType.MouseDown && e.button == 0)
@@ -123,7 +123,7 @@ namespace OSK
 #if UNITY_2022_1_OR_NEWER
                 var r = Quaternion.identity;
                 Vector3 newPosition = Handles.FreeMoveHandle(
-                    path.position,
+                    pathProvier.position,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap
@@ -138,10 +138,10 @@ namespace OSK
                 );
 #endif
 
-                if (newPosition != path.position)
+                if (newPosition != pathProvier.position)
                 {
                     Undo.RecordObject(moveAlongPathProvider, "Move Path Point");
-                    path.position = newPosition;
+                    pathProvier.position = newPosition;
                 }
             }
 
@@ -259,11 +259,11 @@ namespace OSK
             }
         }
 
-        private void RemovePathPointAt(Path path)
+        private void RemovePathPointAt(PathProvier pathProvier)
         {
             if (moveAlongPathProvider != null)
             {
-                moveAlongPathProvider.RemovePathPoint(path);
+                moveAlongPathProvider.RemovePathPoint(pathProvier);
                 Repaint();
             }
         }

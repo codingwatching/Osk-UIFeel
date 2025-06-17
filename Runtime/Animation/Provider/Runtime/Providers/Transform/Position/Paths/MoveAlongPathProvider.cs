@@ -10,7 +10,7 @@ namespace OSK
     [DisallowMultipleComponent]
     public class MoveAlongPathProvider : DoTweenBaseProvider
     {
-        public List<Path> paths = new List<Path>();
+        public List<PathProvier> paths = new List<PathProvier>();
         public PathType typePath = PathType.CatmullRom;
         public PathMode pathMode = PathMode.Full3D;
  
@@ -19,8 +19,8 @@ namespace OSK
         public bool isStartFirstPoint = true;
         public bool isLookAt = false;
         
-        public override object GetStartValue() => null;
-        public override object GetEndValue() => null;
+        public override object GetStartValue() => paths.FirstOrDefault()?.position ?? Vector3.zero;
+        public override object GetEndValue() =>  paths.LastOrDefault()?.position ?? Vector3.zero;
 
         public override void ProgressTween(bool isPlayBackwards)
         {
@@ -83,21 +83,21 @@ namespace OSK
         public void AddPathPoint()
         {
             var idx = paths.Count;
-            Path newPath = new Path(idx, transform.position, transform.rotation);
-            paths.Add(newPath);
+            PathProvier newPathProvier = new PathProvier(idx, transform.position, transform.rotation);
+            paths.Add(newPathProvier);
         }
 
         public void AddPathPoint(Vector3 position, Quaternion rotation)
         {
-            Path newPath = new Path(paths.Count, position, rotation);
-            paths.Add(newPath);
+            PathProvier newPathProvier = new PathProvier(paths.Count, position, rotation);
+            paths.Add(newPathProvier);
         }
 
-        public void RemovePathPoint(Path path)
+        public void RemovePathPoint(PathProvier pathProvier)
         {
-            if (paths.Contains(path))
+            if (paths.Contains(pathProvier))
             {
-                paths.Remove(path);
+                paths.Remove(pathProvier);
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
@@ -57,8 +58,11 @@ namespace OSK
             if (isPress) return;
             isPress = true;
             m_Image.color = colorPress;
-            OnPointerDownEvent?.Invoke();
-            DownAnim();
+            DownAnim(() =>
+            {
+                Debug .Log("ButtonUI OnPointerDown");
+                OnPointerDownEvent?.Invoke();
+            });
             
             if (playSoundOnClick)
                 PlaySound();
@@ -70,26 +74,29 @@ namespace OSK
             isPress = false;
 
             m_Image.color = colorShow;
-            OnPointerUpEvent?.Invoke();
-            UpAnim();
+            UpAnim(() =>
+            {
+                Debug .Log("ButtonUI OnPointerUp");
+                OnPointerUpEvent?.Invoke();
+            });
         }
 
-        public void DownAnim()
+        public void DownAnim(Action onComplete)
         {
-            AnimInternal(DownSetting);
+            AnimInternal(DownSetting, onComplete);
         }
 
-        public void UpAnim()
+        public void UpAnim(Action onComplete)
         {
-            AnimInternal(UpSetting);
+            AnimInternal(UpSetting, onComplete);
             if (NeedSecondUpSetting)
-                mTween.OnComplete(() => { AnimInternal(SecondUpSetting); });
+                mTween.OnComplete(() => { AnimInternal(SecondUpSetting, onComplete); });
         }
 
-        private void AnimInternal(TweenSetting setting)
+        private void AnimInternal(TweenSetting setting, Action onComplete)
         {
             KillTween();
-            ApplyTweenDown(setting);
+            ApplyTweenDown(setting, onComplete);
         }
     }
 }

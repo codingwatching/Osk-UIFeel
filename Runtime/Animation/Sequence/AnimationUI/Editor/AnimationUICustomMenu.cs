@@ -6,7 +6,7 @@ namespace OSK
 {
     public class AnimationUICustomMenu
     {
-        [MenuItem("OSK-Framework/UI/Create AnimationUI")]
+        [MenuItem("OSK-Framework/Tools/UI/Create AnimationUI")]
         static void CreateAnimationUI(MenuCommand menuCommand)
         {
             GameObject selected = Selection.activeGameObject;

@@ -79,6 +79,8 @@ namespace OSK
 
         [ShowIf(nameof(isShowEvent))] public UnityEvent OnPointerDownEvent;
         [ShowIf(nameof(isShowEvent))] public UnityEvent OnPointerUpEvent;
+        [ShowIf(nameof(isShowEvent))] public UnityEvent OnSoundPlayEvent;
+
 
         protected void KillTween()
         {
@@ -86,7 +88,7 @@ namespace OSK
             mTween = null;
         }
 
-        public void ApplyTweenDown(TweenSetting setting)
+        public void ApplyTweenDown(TweenSetting setting, Action oncomplete)
         {
             if (setting.animationType.HasFlag(AnimationType.Scale))
                 mTween = transform.DOScale(setting.SizeTarget, setting.Duration);
@@ -104,6 +106,11 @@ namespace OSK
                 mTween?.SetEase(setting.EaseType);
 
             mTween?.SetUpdate(isIgnoreTimeScale);
+            mTween?.OnComplete(() =>
+            {
+                oncomplete?.Invoke();
+                mTween = null;
+            });
         }
 
 
@@ -118,6 +125,7 @@ namespace OSK
 
         protected virtual void PlaySound()
         {
+            OnSoundPlayEvent?.Invoke();
         }
     }
 }

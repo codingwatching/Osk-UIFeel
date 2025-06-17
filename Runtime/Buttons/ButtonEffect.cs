@@ -26,14 +26,17 @@ namespace OSK
             if (GetComponent<Button>() != null && GetComponent<Button>().interactable == false)
                 return;
 
-            OnPointerDownEvent?.Invoke();
             if (playSoundOnClick)
             {
                 PlaySound();
             }
 
             KillTween();
-            ApplyTweenDown(setting);
+            ApplyTweenDown(setting,
+                () =>
+                {
+                    OnPointerDownEvent?.Invoke();
+                });
             IsPressed = true;
         }
 
