@@ -36,7 +36,12 @@ namespace OSK
             scaleProvider = GetComponent<ScaleProvider>();
             rotationProvider = GetComponent<RotationProvider>();
             positionProvider = GetComponent<PositionProvider>();
+            SetValueTween();
+        }
 
+        private void SetValueTween()
+        {
+            
             switch (typeShake)
             {
                 case TypeShake.Position:
@@ -78,18 +83,9 @@ namespace OSK
 
 
         public override void ProgressTween(bool isPlayBackwards)
-        {
-            RootTransform.localPosition = originalPosition;
-            RootTransform.localEulerAngles = originalRotation;
-            RootTransform.localScale = originalScale;
-
-            if (tweener == null)
-            {
-                originalPosition = RootTransform.localPosition;
-                originalRotation = RootTransform.localEulerAngles;
-                originalScale = RootTransform.localScale;
-            }
-
+        { 
+            SetValueTween();
+            
             var rs = (isRandom) ? Extension.RandomVector3(-strength, strength) : strength;
             tweener = typeShake switch
             {
