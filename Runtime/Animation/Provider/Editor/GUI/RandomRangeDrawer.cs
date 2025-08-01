@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomPropertyDrawer(typeof(RandomRangeAttribute))]
+[CanEditMultipleObjects]
 public class RandomRangeDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 namespace OSK
 {
     [CustomEditor(typeof(DoTweenBaseProvider), true)]
+    [CanEditMultipleObjects]
     public class DoTweenBaseProviderEditor : Sirenix.OdinInspector.Editor.OdinEditor
     {
         private DoTweenBaseProvider provider;

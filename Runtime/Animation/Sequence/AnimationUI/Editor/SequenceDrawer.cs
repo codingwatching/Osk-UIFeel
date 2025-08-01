@@ -7,6 +7,7 @@ using TMPro;
 namespace OSK
 {
     [CustomPropertyDrawer(typeof(Sequence))]
+    [UnityEditor.CanEditMultipleObjects]
     public class SequenceDrawer : PropertyDrawer
     {
         float _height = EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;

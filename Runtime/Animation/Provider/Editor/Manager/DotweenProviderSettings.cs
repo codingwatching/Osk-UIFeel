@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 namespace OSK
 { 
+    [CanEditMultipleObjects]
     public class DotweenProviderSettings : ScriptableObject
     {
         [Header("Put the component types that need to be refreshed during preview here")]

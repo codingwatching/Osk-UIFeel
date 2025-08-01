@@ -10,6 +10,7 @@ using UnityEditor;
 
 namespace OSK
 {
+[CanEditMultipleObjects]
     public static class DotweenPreviewManager
     {
         static List<Tweener> tweeners = new List<Tweener>();

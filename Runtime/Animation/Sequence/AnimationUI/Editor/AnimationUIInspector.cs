@@ -7,6 +7,7 @@ using TMPro;
 namespace OSK
 {
     [CustomEditor(typeof(AnimationUI))]
+    [UnityEditor.CanEditMultipleObjects]
     public class AnimationUIInspector : Editor
     {
         public override void OnInspectorGUI()

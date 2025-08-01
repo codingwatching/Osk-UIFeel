@@ -1,7 +1,9 @@
 #if UNITY_EDITOR
 
+using UnityEditor;
 using UnityEngine;
 
+[CanEditMultipleObjects]
 public class RandomRangeAttribute : PropertyAttribute
 {
     public float Min { get; }

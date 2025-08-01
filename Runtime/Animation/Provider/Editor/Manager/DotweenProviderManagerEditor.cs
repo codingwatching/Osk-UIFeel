@@ -8,6 +8,7 @@ using UnityEngine;
 namespace OSK
 {
     [CustomEditor(typeof(DotweenProviderManager))]
+    [CanEditMultipleObjects]
     class DotweenProviderManagerEditor : OdinEditor
     {
         DotweenProviderManager manager;
