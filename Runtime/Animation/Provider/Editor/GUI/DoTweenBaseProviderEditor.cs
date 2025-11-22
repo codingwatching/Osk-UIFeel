@@ -437,9 +437,15 @@ namespace OSK
                         startValueProperty.enumValueIndex = (int)provider.GetStartValue();
                         break;
                     case SerializedPropertyType.Vector3:
-                        var p = provider.GetComponent<Transform>();
-                        if (provider is RotationProvider)
+                        if (provider is RectPositionProvider)
                         {
+                            var rect = provider.GetComponent<RectTransform>();
+                            startValueProperty.vector3Value = GetStandardizedPosition(rect);
+                        }
+                        // -----------------------------------
+                        else if (provider is RotationProvider)
+                        {
+                            var p = provider.GetComponent<Transform>();
                             var r = provider.GetComponent<RotationProvider>();
                             startValueProperty.vector3Value = r.isLocal
                                 ? p.localEulerAngles
@@ -447,10 +453,11 @@ namespace OSK
                         }
                         else if (provider is ScaleProvider)
                         {
-                            startValueProperty.vector3Value = p.localScale;
+                            startValueProperty.vector3Value = provider.transform.localScale;
                         }
                         else
                         {
+                            var p = provider.GetComponent<Transform>();
                             if (p != null)
                             {
                                 startValueProperty.vector3Value = p.localPosition;
@@ -460,7 +467,6 @@ namespace OSK
                                 startValueProperty.vector3Value = (Vector3)provider.GetStartValue();
                             }
                         }
-
                         break;
                     case SerializedPropertyType.Quaternion:
                         var q = provider.GetComponent<Transform>();
@@ -522,9 +528,14 @@ namespace OSK
                         endValueProperty.enumValueIndex = (int)provider.GetEndValue();
                         break;
                     case SerializedPropertyType.Vector3:
-                        var p = provider.GetComponent<Transform>();
-                        if (provider is RotationProvider)
+                        if (provider is RectPositionProvider)
                         {
+                            var rect = provider.GetComponent<RectTransform>();
+                            endValueProperty.vector3Value = GetStandardizedPosition(rect);
+                        }
+                        else if (provider is RotationProvider)
+                        {
+                            var p = provider.GetComponent<Transform>();
                             var r = provider.GetComponent<RotationProvider>();
                             endValueProperty.vector3Value = r.isLocal
                                 ? p.localEulerAngles
@@ -532,10 +543,11 @@ namespace OSK
                         }
                         else if (provider is ScaleProvider)
                         {
-                            endValueProperty.vector3Value = p.localScale;
+                            endValueProperty.vector3Value = provider.transform.localScale;
                         }
                         else
                         {
+                            var p = provider.GetComponent<Transform>();
                             if (p != null)
                             {
                                 endValueProperty.vector3Value = p.localPosition;
@@ -545,7 +557,6 @@ namespace OSK
                                 endValueProperty.vector3Value = (Vector3)provider.GetEndValue();
                             }
                         }
-
                         break;
                     case SerializedPropertyType.Quaternion:
                         var q = provider.GetComponent<Transform>();
@@ -566,7 +577,25 @@ namespace OSK
             EditorGUILayout.EndHorizontal();
             serializedObject.ApplyModifiedProperties();
         }
+        
+        private Vector3 GetStandardizedPosition(RectTransform rect)
+        {
+            if (rect == null) return Vector3.zero;
 
+            Vector2 currentPivot = rect.pivot;
+            Vector2 standardPivot = new Vector2(0.5f, 0.5f); // Pivot chuẩn Center
+            Vector2 pivotDelta = currentPivot - standardPivot;
+            Vector2 size = rect.rect.size;
+
+            // Công thức tính Offset giống hệt bên runtime
+            float offsetX = pivotDelta.x * size.x;
+            float offsetY = pivotDelta.y * size.y;
+
+            // LƯU Ý QUAN TRỌNG: Ở đây ta TRỪ đi Offset để lấy lại giá trị gốc
+            Vector3 currentPos = rect.anchoredPosition;
+            return new Vector3(currentPos.x - offsetX, currentPos.y - offsetY, currentPos.z);
+        }
+        
 
         private void DrawPreviewControls()
         {
